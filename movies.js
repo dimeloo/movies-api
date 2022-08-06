@@ -10,7 +10,7 @@ export const queryMovies= async () => {
 }
 
 // Add a movie
-export function addMovie(body){
+export const addMovie = async (body) => {
     const movieAdded =  await movies.insertOne(body)
     return movieAdded
 }
