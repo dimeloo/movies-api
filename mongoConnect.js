@@ -13,6 +13,6 @@ const client = new MongoClient(uri)
 const db = client.db('bocacode-test')
 
 // 5. Create variable and assign it the 'movie' collection from the bocacode-test database
-const movies = db.collection('movie')
+// const movies = db.collection('movie') --------- this was moved to movies.js 
 
-export default movies
+export default db

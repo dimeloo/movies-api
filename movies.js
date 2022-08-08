@@ -1,34 +1,38 @@
-import movies from "./mongoConnect.js"
+import db from './mongoConnect.js'
+
+const movies = db.collection('movie')
 
 // CRUD on movies
 
-// Get all movies
-export const queryMovies= async () => {
-    const allMovies = await movies.find().toArray()
-
-    return allMovies
+// Get all movies (Updated on 8-8-2022)
+export const queryMovies = async (req, res) => {
+  const allMovies = await movies.find().toArray()
+  res.send(allMovies)
 }
 
 // Add a movie
-export const addMovie = async (body) => {
-    const movieAdded =  await movies.insertOne(body)
-    return movieAdded
+export const addMovie = async (req, res) => {
+  await movies.insertOne(req.body)
+  const allMovies = await movies.find().toArray()
+  res.send(allMovies)
 }
 
 // Update movie
-export async function updateMovie(query, body) {
-    const movieUpdated = await movies.findOneAndUpdate(query , {$set: body})
+export async function updateMovie(req, res) {
+  await movies.findOneAndUpdate(req.query, { $set: req.body })
+  const movieUpdated = await movies.find(req.query).toArray()
+  res.send(movieUpdated)
 }
 
 // Delete Movie
-export async function deleteMovie(movieToDelete) {
-    // movies.findOneAndDelete(movieToDelete, (err, result) => {
-    //     console.log(result)
-    // })
-    const movieDeleted = await movies.findOneAndDelete(movieToDelete)
-    return movieDeleted
+export async function deleteMovie(req, res) {
+  // movies.findOneAndDelete(movieToDelete, (err, result) => {
+  //     console.log(result)
+  // })
+  await movies.findOneAndDelete(req.query)
+  const allMovies = await movies.find().toArray()
+  res.send(allMovies)
 }
-
 
 // Delete movie
 // Handle promise if no callback is provided
@@ -38,3 +42,5 @@ export async function deleteMovie(movieToDelete) {
 //         .then(() => console.log('movie deleted'))
 //         .catch(err => console.error(err))
 // }
+//test
+//
